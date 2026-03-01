@@ -1,0 +1,31 @@
+import wbdata
+import pandas as pd
+import datetime
+import matplotlib.pyplot as plt
+
+# 1. Define time period and indicator
+data_date = (datetime.datetime(2000, 1, 1), datetime.datetime(2024, 1, 1))
+indicator = {"NY.GDP.MKTP.KD.ZG": "GDP Growth (%)"}
+
+# 2. Fetch data
+df = wbdata.get_dataframe(indicator, country="BGD", date=data_date)
+df = df.reset_index()
+
+# 3. Clean Data: Ensure 'date' is a datetime object and sort it
+df['date'] = pd.to_datetime(df['date'])
+df = df.sort_values("date")
+
+# 4. Plotting the data
+plt.figure(figsize=(12, 6))
+plt.plot(df['date'], df['GDP Growth (%)'], marker='o', linestyle='-', color='teal', linewidth=2)
+
+# Adding labels and styling
+plt.title('Bangladesh Annual GDP Growth Rate (2000-2024)', fontsize=14, fontweight='bold')
+plt.xlabel('Year', fontsize=12)
+plt.ylabel('Growth Rate (%)', fontsize=12)
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.axhline(0, color='black', linewidth=1) # Adds a baseline at 0%
+
+# Show the plot
+plt.tight_layout()
+plt.show()
